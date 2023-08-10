@@ -4,15 +4,13 @@ Author: Joon Sung Park (joonspk@stanford.edu)
 File: gpt_structure.py
 Description: Wrapper functions for calling OpenAI APIs.
 """
-import json
-import random
 import openai
-import time 
+import utils
 
 from utils import *
 openai.api_key = openai_api_key
 
-def ChatGPT_request(prompt): 
+def ChatGPT_request(prompt):
   """
   Given a prompt and a dictionary of GPT parameters, make a request to OpenAI
   server and returns the response. 
@@ -25,14 +23,15 @@ def ChatGPT_request(prompt):
     a str of GPT-3's response. 
   """
   # temp_sleep()
-  try: 
+  try:
     completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
-    messages=[{"role": "user", "content": prompt}]
+      model="gpt-3.5-turbo",
+      messages=[{"role": "user", "content": prompt}],
+      api_base=utils.openai_proxy_host
     )
     return completion["choices"][0]["message"]["content"]
-  
-  except: 
+
+  except:
     print ("ChatGPT ERROR")
     return "ChatGPT ERROR"
 
@@ -63,7 +62,8 @@ Example output json:
 
 print (ChatGPT_request(prompt))
 
-
+if __name__ == "__main__":
+  ChatGPT_request(prompt)
 
 
 
